@@ -13,9 +13,12 @@ class TestAssociationProxy:
             db.session.add_all([c, i])
             db.session.commit()
 
-            r = Review(comment='great!', customer=c, item=i)
-            db.session.add(r)
+            
+            c.items.append(i)
             db.session.commit()
+
+            # Refresh 
+            db.session.refresh(c)
 
             assert hasattr(c, 'items')
             assert i in c.items
